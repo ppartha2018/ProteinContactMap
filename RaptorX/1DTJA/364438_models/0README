@@ -1,0 +1,11 @@
+-----------------------------------------------------------------
+Explanation of files in seqid_models.zip,
+where seqid is a number assigned by RaptorX to the query sequence
+-----------------------------------------------------------------
+
+0README             : This README file.
+seqid_model_X.pdb   : The predicted five 3D models for the input sequence in PDB format, where X ranges from 1 to 5.
+seqid.model_summary : The summary file contains the energy score from CNS_solver for each predicted 3D model.
+
+In this package, all files can be opened by WordPad on Windows or vi on Linux.
+
