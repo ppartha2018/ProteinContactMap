@@ -27,7 +27,8 @@ def get_contacts(atoms = []):
     neighbors = neighbor_search.search_all(radius=SEARCH_RADIUS)
     #print("Size of Neighbhor Map: %d" % len(neighbors))
     #neighbors_map: dictionary with tuple(ca_i,ca_j) as keys - eg: [(ca1,ca2):1,(ca21,ca45):1,...]
-    neighbors_map = {(x[0].get_serial_number(),x[1].get_serial_number()): 1 for x in neighbors} 
+    neighbors_map = {(x[0].get_serial_number(),x[1].get_serial_number()): 1 for x in neighbors}
+    no_of_native_contacts = len(neighbors_map) 
 
     contact_map = {}
     n = len(atoms)
@@ -39,7 +40,7 @@ def get_contacts(atoms = []):
             contact_map[(x,y)] = neighbors_map.get((atoms[x].get_serial_number(),atoms[y].get_serial_number()),0)
    # print("In get_contacts:Size of atoms: %d :Length of the contact map: %d" % (n,len(contact_map)))
     #print contact_map
-    return contact_map  
+    return contact_map,no_of_native_contacts  
 
 def main(protein_id, predicted_cm_path):
     '''
@@ -69,9 +70,9 @@ pdb file name is given as command-line argument.
 def extract_atoms(protein_id, model_content, predicted_cm_path):
     #print "CAlling..."
     temp_pdb_file = output_prefix_path+"_temp_pdb.pdb"
-    cm_score1_file = output_prefix_path+protein_id+"_cm_score1.txt"
-    cm_score2_file = output_prefix_path+protein_id+"_cm_score2.txt"
-    cm_score3_file = output_prefix_path+protein_id+"_cm_accuracy.txt"
+    cm_score1_file = output_prefix_path+protein_id+"_cm_accuracy.txt"
+    cm_score2_file = output_prefix_path+protein_id+"_cm_coverage.txt"
+    #cm_score3_file = output_prefix_path+protein_id+"_cm_accuracy.txt"
     
     str1 = ""
     with open(temp_pdb_file,"w") as testing:
@@ -92,16 +93,18 @@ def extract_atoms(protein_id, model_content, predicted_cm_path):
                     #print residue["CA"].get_serial_number()
                     c_alpha_atoms.append(residue["CA"])
                     #print(c_alpha_atoms.get_coord())
-	contact_map[model.get_id()] = get_contacts(c_alpha_atoms)
+	cm_result = get_contacts(c_alpha_atoms)
+    contact_map[model.get_id()] = cm_result[0]
+    no_of_native_contacts = cm_result[1]
 	#print("********Length of the contact map for model", model.get_id(), " is ", len(contact_map[model.get_id()]), "size of the residue chain: ", len(c_alpha_atoms))
-        no_of_atoms = len(c_alpha_atoms)
-    	#prepare_for_display(contact_map[model.get_id()],model.get_id(), no_of_atoms)
-    	#display_contact_map(model.get_id(),contact_map[model.get_id()])
-        scores = compare_contact_map(contact_map[model.get_id()],extract_raptorX_contact_map(predicted_cm_path,no_of_atoms),no_of_atoms)
-        write_results_to_file(cm_score1_file, str(scores[0]))
-        write_results_to_file(cm_score2_file, str(scores[1]))
-        write_results_to_file(cm_score3_file, str(scores[2]))
-        print "To write: %f in %s" % (scores[2],cm_score3_file)
+    no_of_atoms = len(c_alpha_atoms)
+    #prepare_for_display(contact_map[model.get_id()],model.get_id(), no_of_atoms)
+    #display_contact_map(model.get_id(),contact_map[model.get_id()])
+    scores = compare_contact_map(contact_map[model.get_id()],extract_raptorX_contact_map(predicted_cm_path,no_of_atoms),no_of_atoms, no_of_native_contacts)
+    write_results_to_file(cm_score1_file, str(scores[0]))
+    write_results_to_file(cm_score2_file, str(scores[1]))
+    #write_results_to_file(cm_score3_file, str(scores[2]))
+    #print "To write: %f in %s" % (scores[2],cm_score3_file)
         
 def write_results_to_file(filename, value):
     with open(filename, "a") as res_file:
