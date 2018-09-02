@@ -83,4 +83,4 @@ class ContactMapMetrics:
     
     def get_coverage(self):
         self.coverage_average = self.coverage_sum / self.total_samples
-        return self.accuracy_average
+        return self.coverage_average

@@ -133,11 +133,11 @@ class ContactMapWorker:
     
     def get_accuracy(self):
         self.contactMapMetrics.get_accuracy()
-        print("Caluclated accuracy:", self.contactMapMetrics.get_accuracy())
+        print("calculated accuracy:", self.contactMapMetrics.get_accuracy())
     
     def get_coverage(self):
         self.contactMapMetrics.get_coverage()
-        print("Caluclated accuracy:", self.contactMapMetrics.get_coverage())
+        print("calculated coverage:", self.contactMapMetrics.get_coverage())
 
 # Program Arguments: Arg1: protein_id, Arg2: pdb location
 # Usage: python contact_map2.py 1DTJA /home/xxx/yyy/pdb/1DTJA.pdb   
