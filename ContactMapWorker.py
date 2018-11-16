@@ -140,26 +140,42 @@ class ContactMapWorker:
         print "Top10:"
         predicted_contact_map = construct_predicted_contact_map(predicted_contacts, 10, residue_length)
         contact_comparison_scores = self.contactMapMetrics.compare_contact_map(contact_map_holder[model.get_id()], predicted_contact_map, residue_length, no_of_original_contacts)
-        cm_score1_file = output_path+self.protein_id+"_cm_precision_top10.txt"
-        cm_score2_file = output_path+self.protein_id+"_cm_coverage_top10.txt"
-        self.write_results_to_file(cm_score1_file, str(contact_comparison_scores[0]))
-        self.write_results_to_file(cm_score2_file, str(contact_comparison_scores[1]))
+        precision_file = output_path+self.protein_id+"_cm_precision_top10.txt"
+        coverage_file = output_path+self.protein_id+"_cm_coverage_top10.txt"
+        recall_file = output_path+self.protein_id+"_cm_recall_top10.txt"
+        f1_file = output_path+self.protein_id+"_cm_f1_top10.txt"
+
+        self.write_results_to_file(precision_file, str(contact_comparison_scores[0]))
+        self.write_results_to_file(coverage_file, str(contact_comparison_scores[1]))
+        self.write_results_to_file(recall_file, str(contact_comparison_scores[2]))
+        self.write_results_to_file(f1_file, str(contact_comparison_scores[3]))
         #top L/5
         print "TopL/5:"
         predicted_contact_map = construct_predicted_contact_map(predicted_contacts, residue_length/5, residue_length)
         contact_comparison_scores = self.contactMapMetrics.compare_contact_map(contact_map_holder[model.get_id()], predicted_contact_map, residue_length, no_of_original_contacts)
-        cm_score1_file = output_path+self.protein_id+"_cm_precision_topLBy5.txt"
-        cm_score2_file = output_path+self.protein_id+"_cm_coverage_topLBy5.txt"
-        self.write_results_to_file(cm_score1_file, str(contact_comparison_scores[0]))
-        self.write_results_to_file(cm_score2_file, str(contact_comparison_scores[1]))
+        precision_file = output_path+self.protein_id+"_cm_precision_topLBy5.txt"
+        coverage_file = output_path+self.protein_id+"_cm_coverage_topLBy5.txt"
+        recall_file = output_path+self.protein_id+"_cm_recall_topLBy5.txt"
+        f1_file = output_path+self.protein_id+"_cm_f1_topLBy5.txt"
+
+        self.write_results_to_file(precision_file, str(contact_comparison_scores[0]))
+        self.write_results_to_file(coverage_file, str(contact_comparison_scores[1]))
+        self.write_results_to_file(recall_file, str(contact_comparison_scores[2]))
+        self.write_results_to_file(f1_file, str(contact_comparison_scores[3]))
+
         #top L/2
         print "TopL/2:"
         predicted_contact_map = construct_predicted_contact_map(predicted_contacts, residue_length/2, residue_length)
         contact_comparison_scores = self.contactMapMetrics.compare_contact_map(contact_map_holder[model.get_id()], predicted_contact_map, residue_length, no_of_original_contacts)
-        cm_score1_file = output_path+self.protein_id+"_cm_precision_topLBy2.txt"
-        cm_score2_file = output_path+self.protein_id+"_cm_coverage_topLBy2.txt"
-        self.write_results_to_file(cm_score1_file, str(contact_comparison_scores[0]))
-        self.write_results_to_file(cm_score2_file, str(contact_comparison_scores[1]))
+        precision_file = output_path+self.protein_id+"_cm_precision_topLBy2.txt"
+        coverage_file = output_path+self.protein_id+"_cm_coverage_topLBy2.txt"
+        recall_file = output_path+self.protein_id+"_cm_recall_topLBy2.txt"
+        f1_file = output_path+self.protein_id+"_cm_f1_topLBy2.txt"
+
+        self.write_results_to_file(precision_file, str(contact_comparison_scores[0]))
+        self.write_results_to_file(coverage_file, str(contact_comparison_scores[1]))
+        self.write_results_to_file(recall_file, str(contact_comparison_scores[2]))
+        self.write_results_to_file(f1_file, str(contact_comparison_scores[3]))
 
     def write_results_to_file(self,filename, value):
         with open(filename, "a") as res_file:

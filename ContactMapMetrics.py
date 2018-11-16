@@ -15,6 +15,7 @@ class ContactMapMetrics:
     
     '''
     Contact map evaluation measures:
+    https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5820169/
     https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3226919/
     https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1404-z
     ''' 
@@ -27,6 +28,8 @@ class ContactMapMetrics:
         #print computed_map
 
         precision = 0
+        recall = 0
+        f1 = 0
         coverage = 0
         
         predicted_map_1s = 0
@@ -56,13 +59,22 @@ class ContactMapMetrics:
         #precision Acc = TP/(TP + FP), 
         #where TP and FP are the numbers of correctly and incorrectly predicted contacts, respectively
         precision = true_positives / (true_positives + false_positives)
+        recall = true_positives / (true_positives + false_negatives)
+        print ("TP=%d, FP=%d, TN=%d, FN=%d" % (true_positives,false_positives,true_negatives,false_negatives))
+        print ("Evaluation: precision: %f, recall=%f" % (precision,recall))
+        try:
+            f1 = 2 * precision * recall / (precision + recall)
+        except ZeroDivisionError:
+            f1 = 0 
         #coverage = TP/ Nc, Nc - no of contacts in native model
-        coverage = predicted_map_1s / no_of_native_contacts # equal to (TP+FP) / n
+        coverage = true_positives / no_of_native_contacts # equal to (TP) / n
         #score2 = (predicted_map_0s + predicted_map_1s) / no_of_atoms
         
         scores = []
         scores.append(precision)
         scores.append(coverage)
+        scores.append(recall)
+        scores.append(f1)
         #scores.append(score2)
         
         #print ("Evaluation: Score1: %f, Score2: %f, Score3: %f" % (score1,score2,score3))
